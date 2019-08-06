@@ -17,11 +17,12 @@ View the images
 
 `docker image ls`
 
+Push the image
 
-
+`docker image push localhost:5000/roycetech/tagging:latest`
 
 ## Reference
 
-[LinkedIn Learning Section]https://www.linkedin.com/learning/docker-for-java-developers/tag-and-share-docker-images?u=2105028
+[LinkedIn Learning Section](https://www.linkedin.com/learning/docker-for-java-developers/tag-and-share-docker-images?u=2105028)
 
 [Docker Registry Image](https://hub.docker.com/_/registry)
