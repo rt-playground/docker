@@ -1,4 +1,3 @@
-# Use root/example as user/password credentials
 ---
 version: '3.1'
 
@@ -9,11 +8,12 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
+      # Use "root" as username
       MYSQL_ROOT_PASSWORD: dev
-      # we don't need to expose this, but for dev, we want to be able to connect
-      #  using a separate sql client and see the data.
     ports:
       - 3306:3306
+    # we don't need to expose this, but for dev, we want to be able to connect
+    #  using a separate sql client and see the data.
     volumes:
       - ~/docker/mysql-data:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
