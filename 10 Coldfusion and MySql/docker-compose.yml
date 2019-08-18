@@ -1,24 +1,32 @@
 # Use root/example as user/password credentials
+---
 version: '3.1'
 
 services:
 
   db:
-    # image: mysql:latest
-    image: mysql:5.7.27
+    image: mysql:5
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
-    # ports:
-    #   - 3306:3306
+      MYSQL_ROOT_PASSWORD: dev
+      # we don't need to expose this, but for dev we want to be able to connect
+      #  using a separate sql client and see the data.
+    ports:
+      - 3306:3306
+    volumes:
+      - ~/docker-mysql-data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
 
   coldfusion10:
-    # image: coldfusion10_dev:0.02
     image: roycetech/coldfusion10_dev:0.01
     environment:
       - MYSQL_URI=db
     ports:
       - 8500:8500
+    volumes:
+      - ${HOME}/docker/coldfusion10/cfusion/lib/neo-datasource.xml:/opt/coldfusion10/cfusion/lib/neo-datasource.xml
+      # edit and set project folder below
+      - ~/projects/@rt-learn-lang/coldfusion10:/opt/coldfusion10/cfusion/wwwroot/lang_app
     depends_on:
       - db
