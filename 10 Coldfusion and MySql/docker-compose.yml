@@ -10,12 +10,12 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: dev
-      # we don't need to expose this, but for dev we want to be able to connect
+      # we don't need to expose this, but for dev, we want to be able to connect
       #  using a separate sql client and see the data.
     ports:
       - 3306:3306
     volumes:
-      - ~/docker-mysql-data:/var/lib/mysql
+      - ~/docker/mysql-data:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
 
   coldfusion10:
