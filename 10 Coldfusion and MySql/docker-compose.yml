@@ -26,6 +26,7 @@ services:
       - 8500:8500
     volumes:
       - ${HOME}/docker/coldfusion10/cfusion/lib/neo-datasource.xml:/opt/coldfusion10/cfusion/lib/neo-datasource.xml
+      - ${HOME}/docker/coldfusion10/cfusion/lib/neo-debug.xml:/opt/coldfusion10/cfusion/lib/neo-debug.xml
       # edit and set project folder below
       - ${HOME}/projects/@rt-learn-lang/coldfusion10:/opt/coldfusion10/cfusion/wwwroot/lang_app
     depends_on:
