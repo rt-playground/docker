@@ -8,7 +8,7 @@ Run with:
 
 ```shell
 docker container run \
-    --name mysql_dev \
+    --name mysql_local \
     --rm \
     -it \
     -v ~/docker/mysql-data:/var/lib/mysql \
