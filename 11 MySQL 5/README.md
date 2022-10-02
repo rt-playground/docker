@@ -19,6 +19,8 @@ docker container run \
 ```
 
 
+UPDATE: As at April 1, 2022: We no longer need the `--platform` parameter because docker officially released Docker for Mac (ARM) that works without the said parameter.
+
 On Apple Silicon, run with: 
 
 ```shell
@@ -35,3 +37,4 @@ docker container run \
 ```
 
 Note: Above is not optimal and may have significant energy impact due to the emulation of x86 architecture.
+
