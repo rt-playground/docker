@@ -7,6 +7,8 @@ import os
 # pylint: disable=import-error
 from dotenv import load_dotenv
 
+# pylint: enable=import-error
+
 home_folder = os.environ["HOME"]
 
 
@@ -22,7 +24,7 @@ if session_plist is not None:
 as_filepath = os.getenv("AS_FILEPATH")
 
 
-def mai():
+def main():
     """
     test
     """

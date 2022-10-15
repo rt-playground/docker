@@ -11,6 +11,7 @@ This is for my learning purpose.
 
 * Add a dependency.
 * Pass an environment variable.
+* Read from STDIN.
 
 ## References
 
