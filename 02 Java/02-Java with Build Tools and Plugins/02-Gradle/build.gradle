@@ -1,0 +1,66 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '3.0.4'
+	id 'io.spring.dependency-management' version '1.1.0'
+
+	// Add the plugin below
+	id 'com.bmuschko.docker-spring-boot-application' version '9.3.0'
+	// Plugin to allow us to run a docker container.
+	id 'com.bmuschko.docker-remote-api' version '9.3.0'
+}
+
+group = 'com.pluralsight'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'com.h2database:h2'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+bootWar {
+    archiveFileName = 'web.war'
+}
+
+// Add a docker configuration
+docker {
+	springBootApplication {
+		baseImage = 'tomcat:10'
+		ports = [8080]
+		images = ['gradle-docker']
+	}
+}
+
+// Add task to create the docker container
+import com.bmuschko.gradle.docker.tasks.container.*
+
+task createContainer(type: DockerCreateContainer) {
+	// dockerBuildImage is available in the spring boot application plugin.
+	dependsOn dockerBuildImage
+	targetImageId dockerBuildImage.getImageId()
+	hostConfig.portBindings = [ '9060:8080' ]
+	hostConfig.autoRemove = true
+}
+
+task startContainer(type: DockerStartContainer) {
+	dependsOn createContainer
+	targetContainerId createContainer.getContainerId()
+}
+
+task stopContainer(type: DockerStopContainer) {
+	dependsOn createContainer
+	targetContainerId createContainer.containerId
+}

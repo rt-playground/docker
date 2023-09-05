@@ -1,0 +1,53 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.4'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.pluralsight'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'com.h2database:h2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+bootJar {
+	archiveFileName = 'api.jar'
+
+	// Add the default layer configuration
+	layered {
+		application {
+			intoLayer ("spring-boot-loader") {
+				include "org/springframework/boot/loader/**"
+			}
+			intoLayer("application")
+		}
+		// Above defines how the application classes should be layered.
+		dependencies {
+			intoLayer("application") {
+				includeProjectDependencies()
+			}
+			// Above defines how the dependencies should be layered.
+			intoLayer("snapshot-dependencies") {
+				include "*:*:*SNAPSHOT"
+			}
+			intoLayer("hibernate-deps") {
+				include "org.hibernate*:*:*"
+			}
+			intoLayer("dependencies")
+		}
+		layerOrder = ["dependencies", "hibernate-deps", "spring-boot-loader", "snapshot-dependencies", "application"]
+	}
+}

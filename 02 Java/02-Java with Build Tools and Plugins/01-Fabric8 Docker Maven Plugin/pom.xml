@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.0.4</version>
+		<relativePath/>
+		<!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.pluralsight</groupId>
+	<artifactId>books-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>books-api</name>
+	<description>Demo project</description>
+	<properties>
+		<java.version>17</java.version>
+		<!-- Customize the image name. -->
+		<docker.name>fabric8.dmp</docker.name>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.1.214</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- Add the fabric8 plugin -->
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.42.0</version>
+				<!-- <version>0.43.4</version>-->
+				<!-- In this example, let's move the build from the default
+				install, into tho package phase. -->
+				<executions>
+					<execution>
+						<id>docker:build</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Updated logging mode. -->
+					<verbose>true</verbose>
+					<!-- With this, we will be able to see the Dockerfile being
+					generated and built. -->
+					<images>
+						<image>
+							<!-- Updated image name -->
+							<name>fabric8-dmp:v2</name>
+							<!-- With this build element, the plugin will now
+							ignore the Dockerfile. -->
+							<build>
+								<from>eclipse-temurin:17</from>
+								<!-- This defines how artifacts or other files
+								are copied to the image. It's the equivalent of
+								the copy instruction. It will only copy the
+								application jar file into the image. -->
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<entryPoint>
+									<exec>
+										<arg>java</arg>
+										<arg>-jar</arg>
+										<arg>/maven/${project.build.finalName}.${project.packaging}</arg>
+									</exec>
+								</entryPoint>
+							</build>
+							<run>
+								<!-- Map the ports here. -->
+								<ports>
+									<port>9050:8080</port>
+								</ports>
+							</run>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+		</plugins>
+		<finalName>api</finalName>
+	</build>
+</project>

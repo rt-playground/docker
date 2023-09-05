@@ -1,0 +1,7 @@
+# Let's ignore the extracted layer folders
+application/
+build/
+dependencies/
+hibernate-deps/
+snapshot-dependencies/
+spring-boot-loader
