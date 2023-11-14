@@ -1,3 +1,3 @@
 FROM openjdk:jdk-alpine
 
-CMD java -version
+CMD ["java", "-version"]
