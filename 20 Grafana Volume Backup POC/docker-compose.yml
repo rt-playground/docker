@@ -1,0 +1,16 @@
+---
+services:
+
+  dashboard:
+    image: grafana/grafana:7.4.5
+    volumes:
+      - grafana-data:/var/lib/grafana           # This is where Grafana keeps its data
+
+  backup:
+    image: jareware/docker-volume-backup
+    volumes:
+      - grafana-data:/backup/grafana-data:ro    # Mount the Grafana data volume (as read-only)
+      - ./backups:/archive                      # Mount a local folder as the backup archive
+
+volumes:
+  grafana-data:

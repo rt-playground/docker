@@ -4,14 +4,34 @@
 ##################################################
 
 IMAGE_TAG=jib-web-gradle
+CONTAINER_NAME=i-jib-web-gradle
+
+login:
+	docker login
+
 
 build:
-# 	Unlike maven, this task automatically compiles the project to build the image.
+	#	Unlike maven, this task automatically compiles the project to build the image.
 	gradle jibDockerBuild
+.PHONY: build
+
 
 start:
-	docker run -it --rm -p 9041:8080 $(IMAGE_TAG)
+	docker run \
+		--name $(CONTAINER_NAME) \
+		-d \
+		-it \
+		--rm \
+		-p 9041:8080 \
+		$(IMAGE_TAG)
 
-run:
+stop:
+	docker stop $(CONTAINER_NAME)
+
+browse:
 	open http://localhost:9041/
 
+
+clean:
+	gradle clean
+	rm -rf build

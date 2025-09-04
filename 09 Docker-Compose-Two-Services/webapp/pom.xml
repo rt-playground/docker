@@ -48,7 +48,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
+                <!-- <version>3.0.0</version> -->
+                <version>3.4.0</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
@@ -215,6 +216,19 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.4.0</version>
                         <executions>
+                            <execution>
+                                <id>Echo docker.host</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>echo</executable>
+                                    <arguments>
+                                        <argument>DEBUG: DOCKER HOST: ${docker.host}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
                             <execution>
                                 <id>Configure memory</id>
                                 <phase>install</phase>

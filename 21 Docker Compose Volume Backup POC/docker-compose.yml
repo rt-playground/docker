@@ -1,0 +1,23 @@
+---
+services:
+  web:
+    build: ./web
+    ports:
+      - "8080:3000"
+    volumes:
+      - appdata:/data
+
+  backup:
+    image: jareware/docker-volume-backup:latest
+    # image: offen/docker-volume-backup:latest
+    environment:
+      BACKUP_CRON_EXPRESSION: "*/1 * * * *"
+    #   - BACKUP_SOURCE=appdata
+    #   - BACKUP_TARGET=/backup
+    #   - SCHEDULE=none
+    volumes:
+      - appdata:/backup/appdata:ro
+      - ./backups:/archive
+
+volumes:
+  appdata:
