@@ -1,9 +1,18 @@
+"""
+Example
+"""
+
+# pylint: disable=import-error
 from flask import Flask
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
+    """
+    example
+    """
+
     return "Hello, Docker!"
 
 if __name__ == "__main__":
